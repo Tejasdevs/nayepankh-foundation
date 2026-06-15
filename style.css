@@ -1183,53 +1183,47 @@ body.dark-mode .volunteer-form textarea {
   }
 
   .site-header::after {
-    position: fixed;
-    inset: 0;
-    display: block;
-    background: rgba(16, 24, 22, 0.42);
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.25s ease;
+    display: none;
   }
 
   body.nav-open .site-header::after {
-    opacity: 1;
-    pointer-events: auto;
+    display: none;
   }
 
   .nav-links {
-    position: fixed;
+    position: absolute;
     z-index: 120;
-    top: 0;
+    top: 66px;
+    left: 0;
     right: 0;
-    bottom: 0;
-    width: min(340px, calc(100% - 42px));
+    width: 100%;
     display: grid;
-    align-content: start;
     gap: 8px;
-    padding: 88px 18px 20px;
-    border: 1px solid var(--line);
-    border-radius: 22px 0 0 22px;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: var(--shadow);
+    padding: 14px 18px 18px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    box-shadow: 0 20px 44px rgba(24, 33, 31, 0.14);
     opacity: 0;
     pointer-events: none;
-    transform: translateX(100%);
+    transform: translateY(-10px);
     transition: 0.25s ease;
   }
 
   body.dark-mode .nav-links {
-    background: rgba(23, 35, 31, 0.96);
+    background: var(--surface);
   }
 
   .nav-links.open {
     opacity: 1;
     pointer-events: auto;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 
   .nav-links a {
+    display: block;
     padding: 14px 16px;
+    border-radius: var(--radius);
     font-size: 1rem;
   }
 
@@ -1241,6 +1235,7 @@ body.dark-mode .volunteer-form textarea {
     display: block;
     margin-top: 8px;
     text-align: center;
+    width: 100%;
   }
 
   .theme-toggle {
@@ -1248,6 +1243,7 @@ body.dark-mode .volunteer-form textarea {
     justify-content: space-between;
     margin-left: 0;
     border-radius: var(--radius);
+    min-height: 46px;
   }
 
   .section-shell {
