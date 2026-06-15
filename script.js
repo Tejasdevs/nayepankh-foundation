@@ -111,6 +111,11 @@ if (volunteerForm) {
 }
 
 function animateCounter(counter) {
+  if (counter.dataset.animated === "true") {
+    return;
+  }
+
+  counter.dataset.animated = "true";
   const target = Number(counter.dataset.target);
   const duration = 1600;
   const startTime = performance.now();
@@ -123,26 +128,38 @@ function animateCounter(counter) {
     if (progress < 1) {
       requestAnimationFrame(update);
     } else {
-      counter.textContent = target.toLocaleString("en-IN");
+      counter.textContent = counter.dataset.final || target.toLocaleString("en-IN");
     }
   }
 
   requestAnimationFrame(update);
 }
 
-const impactObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting && !countersStarted) {
-      countersStarted = true;
-      counters.forEach(animateCounter);
-      impactObserver.disconnect();
-    }
-  });
-}, { threshold: 0.35 });
+function startCounters() {
+  if (countersStarted || !counters.length) {
+    return;
+  }
 
-counters.forEach((counter) => {
-  impactObserver.observe(counter);
-});
+  countersStarted = true;
+  counters.forEach(animateCounter);
+}
+
+if ("IntersectionObserver" in window && counters.length) {
+  const impactSection = document.querySelector("#impact");
+  const impactObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        startCounters();
+        impactObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.2, rootMargin: "0px 0px -10% 0px" });
+
+  impactObserver.observe(impactSection || counters[0]);
+  window.setTimeout(startCounters, 2200);
+} else {
+  window.setTimeout(startCounters, 400);
+}
 
 const navObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
